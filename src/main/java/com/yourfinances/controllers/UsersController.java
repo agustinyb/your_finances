@@ -1,7 +1,7 @@
 package com.yourfinances.controllers;
 
-import com.yourfinances.entities.Users;
-import com.yourfinances.services.UsersServices;
+import com.yourfinances.entities.User;
+import com.yourfinances.services.UsersServicesImp;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +12,23 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 @NoArgsConstructor
 @AllArgsConstructor
+@CrossOrigin(origins = "*")
 public class UsersController {
 
     @Autowired
-    private UsersServices services;
+    private UsersServicesImp services;
 
     @PostMapping("/adduser")
-    public ResponseEntity<Users> addUser(@RequestBody Users user) {
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         services.addUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("/updateuser/{id}")
-    public ResponseEntity<Users> updateUser(@PathVariable Integer id, @RequestBody Users user) {
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
         services.updateUser(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -39,12 +40,12 @@ public class UsersController {
     }
 
     @GetMapping("/allusers")
-    public ResponseEntity<List<Users>> getAll() {
+    public ResponseEntity<List<User>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(services.findall());
     }
 
     @GetMapping("/findbyid/{id}")
-    public ResponseEntity<Users> findById(@PathVariable Integer id) {
+    public ResponseEntity<User> findById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(services.findById(id));
     }
 
